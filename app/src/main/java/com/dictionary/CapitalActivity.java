@@ -11,17 +11,13 @@ private TextView tvCapital;
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_capital);
+        tvCapital = findViewById(R.id.tvCname);
 
         Bundle bundle = getIntent().getExtras();
 
         if (bundle!=null){
             String capital = bundle.getString("capital");
-            tvCapital = findViewById(R.id.tvCname);
             tvCapital.setText(capital);
-        }
-        else
-        {
-            Toast.makeText(this,"No Capital", Toast.LENGTH_SHORT).show();
         }
     }
 }

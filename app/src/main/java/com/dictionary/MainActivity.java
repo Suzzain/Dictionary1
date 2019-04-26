@@ -9,32 +9,28 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import java.io.BufferedReader;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Dictionary;
 import java.util.HashMap;
 import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
-public static final String countries[] = {
-        "Nepal","kathmandu",
-        "India","New Delhi",
-        "US","D.C",
-        "Uk","London",
-        "Canada","Ottawa"
-
-};
+private ListView lstCountries;
 private Map<String,String> dictionary;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        ListView lstCountries = findViewById(R.id.lstCountries);
+
+        lstCountries = findViewById(R.id.lstCountries);
 
         dictionary = new HashMap<>();
-        for (int i = 0; i<countries.length;i+=2){
-            dictionary.put(countries[i],countries[i +1]);
-        }
-
+        readFromFile();
         ArrayAdapter countryAdapter = new ArrayAdapter<>(
           this,
           android.R.layout.simple_list_item_1,
@@ -54,5 +50,22 @@ String capital = dictionary.get(key);
     }
 });
 
+    }
+
+    private void readFromFile() {
+        try{
+            FileInputStream fos = openFileInput("words.txt");
+            InputStreamReader isr = new InputStreamReader(fos);
+            BufferedReader br = new BufferedReader(isr);
+            String line = "";
+
+            while((line = br.readLine()) != null){
+                String[] parts = line.split("->");
+                dictionary.put(parts[0], parts[1]);
+            }
+        }
+        catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }
